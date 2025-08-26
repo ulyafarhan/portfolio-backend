@@ -1,0 +1,9 @@
+<x-admin-layout>
+    <h1 class="text-2xl font-bold text-white mb-6">Add New Skill</h1>
+    <div class="p-8 rounded-lg content-card">
+        <form action="{{ route('admin.skills.store') }}" method="POST">
+            @csrf
+            @include('admin.skills._form')
+        </form>
+    </div>
+</x-admin-layout>

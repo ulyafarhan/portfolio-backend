@@ -1,0 +1,39 @@
+# Compiled source #
+###################
+/vendor/
+/node_modules/
+
+# Msc #
+#########
+.env
+.env.backup
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+
+# Laravel Mix #
+###############
+/public/hot
+/public/storage
+/public/mix-manifest.json
+/public/vite.svg
+/public/build
+.vite
+
+# Cache #
+#########
+bootstrap/cache/*.php
+storage/framework/sessions/*
+storage/framework/views/*
+storage/framework/cache/data/*
+
+# Logs #
+########
+/storage/logs/*.log
+
+# IDE files #
+#############
+.idea
+.vscode
