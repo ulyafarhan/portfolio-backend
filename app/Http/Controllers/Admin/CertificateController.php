@@ -24,10 +24,11 @@ class CertificateController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'issuing_organization' => 'required|string|max:255',
-            'issue_date' => 'required|date',
-            'credential_id' => 'nullable|string|max:255',
-            'image' => 'required|image|max:2048',
+            'issuer' => 'required|string|max:255',
+            'description' => 'required|string', 
+            'issued_year' => 'required|integer|min:1990|max:' . date('Y'), 
+            'credential_url' => 'nullable|url',
+            'image' => 'nullable|image|max:2048', 
         ]);
         
         $imagePath = $request->file('image')->store('certificates', 'public');
@@ -46,10 +47,11 @@ class CertificateController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'issuing_organization' => 'required|string|max:255',
-            'issue_date' => 'required|date',
-            'credential_id' => 'nullable|string|max:255',
-            'image' => 'nullable|image|max:2048',
+            'issuer' => 'required|string|max:255',
+            'description' => 'required|string', 
+            'issued_year' => 'required|integer|min:1990|max:' . date('Y'), 
+            'credential_url' => 'nullable|url',
+            'image' => 'nullable|image|max:2048', 
         ]);
 
         $imagePath = $certificate->image_url;

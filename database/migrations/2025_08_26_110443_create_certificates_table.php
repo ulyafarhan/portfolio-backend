@@ -3,14 +3,16 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
-    public function up(): void {
+    public function up(): void
+    {
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('issuing_organization');
-            $table->date('issue_date');
-            $table->string('credential_id')->nullable();
-            $table->string('image_url'); // Path ke gambar sertifikat
+            $table->string('issuer');
+            $table->text('description'); 
+            $table->year('issued_year'); 
+            $table->string('credential_url')->nullable();
+            $table->string('image_url');
             $table->timestamps();
         });
     }

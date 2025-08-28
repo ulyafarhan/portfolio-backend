@@ -6,9 +6,10 @@ class Certificate extends Model {
     use HasFactory;
     protected $fillable = [
         'title',
-        'issuing_organization',
-        'issue_date',
-        'credential_id',
+        'issuer',
+        'description',    // <-- TAMBAHKAN
+        'issued_year',    // <-- UBAH DARI issue_date
+        'credential_url',
         'image_url',
     ];
 }
