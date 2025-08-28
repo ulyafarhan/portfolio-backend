@@ -9,10 +9,10 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->string('issuer');
-            $table->text('description'); 
+            $table->text('description')->nullable(); 
             $table->year('issued_year'); 
             $table->string('credential_url')->nullable();
-            $table->string('image_url');
+            $table->string('thumbnail')->nullable();
             $table->timestamps();
         });
     }

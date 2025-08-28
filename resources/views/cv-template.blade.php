@@ -1,88 +1,218 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>CV - {{ $profile->full_name }}</title>
     <style>
-        body { font-family: 'Helvetica', sans-serif; font-size: 11pt; color: #333; }
-        @page { margin: 40px 50px; }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { margin: 0; font-size: 24pt; }
-        .header h2 { margin: 5px 0; font-size: 14pt; color: #555; }
-        .contact-info { text-align: center; font-size: 10pt; margin-bottom: 25px; }
-        .section-title { font-size: 14pt; font-weight: bold; color: #000; border-bottom: 2px solid #333; padding-bottom: 5px; margin-bottom: 15px; }
-        .content p { margin-top: 0; }
-        .job, .edu { margin-bottom: 15px; }
-        .job-title, .degree { font-weight: bold; }
-        .company, .institution { font-style: italic; color: #555; }
-        .period { float: right; font-weight: bold; color: #555; }
-        .skills-container { width: 100%; }
-        .skill-category { font-weight: bold; margin-top: 10px; }
-        .skill-name { padding: 5px 0; }
+        /* Reset & Font Dasar */
+        body { 
+            font-family: 'Didot' ; /* Font paling aman untuk karakter unicode di PDF */
+            font-size: 12pt; 
+            line-height: 1.5; 
+            color: #333333; 
+            margin: 0;
+        }
+
+        /* Struktur Utama */
+        .page {
+            padding: 30px;
+        }
+
+        /* Header */
+        .header .full-name { 
+            font-size: 24pt; 
+            font-weight: bold; 
+            color: #2c3e50; 
+            margin: 0;
+            text-align: center;
+        }
+        .header .job-title { 
+            font-size: 16pt; 
+            color: #34495e; 
+            margin: 5px 0 10px 0;
+            text-align: center;
+        }
+        .header .contact-info {
+            text-align: center;
+            font-size: 9pt;
+            margin-bottom: 25px;
+            color: #555;
+        }
+
+        /* Judul Bagian */
+        .section-title {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2c3e50;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
+
+        /* Item Konten */
+        .item {
+            margin-bottom: 15px;
+        }
+        .item-header {
+            font-size: 14pt;
+            font-weight: bold;
+        }
+        .item-subtitle {
+            font-style: italic;
+            color: #555555;
+            margin-bottom: 5px;
+        }
+        .item-date {
+            font-weight: normal;
+            font-style: italic;
+        }
+        .item-description {
+            font-size: 12pt;
+            text-align: justify;
+        }
+
+        /* Layout Tabel Anti-Gagal untuk Item dengan Tanggal di Kanan */
+        .item-table {
+            width: 100%;
+            border-spacing: 0;
+        }
+        .item-table .title-cell {
+            width: 80%;
+            vertical-align: top;
+        }
+        .item-table .date-cell {
+            width: 20%;
+            vertical-align: top;
+            text-align: right;
+            font-size: 9pt;
+        }
+
+        /* Layout Keahlian */
+        .skills-table {
+            width: 100%;
+        }
+        .skills-table td {
+            vertical-align: top;
+            padding-bottom: 8px;
+        }
+        .skill-category {
+            font-weight: bold;
+            width: 120px; /* Lebar tetap untuk kategori */
+        }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>{{ $profile->full_name }}</h1>
-        <h2>{{ $profile->job_title }}</h2>
-        <div class="contact-info">
-            {{ $profile->location }} | {{ $profile->phone }} | {{ $profile->email }} | {{ $profile->website }}
+    <div class="page">
+        <div class="header">
+            <p class="full-name">{{ $profile->full_name }}</p>
+            <p class="job-title">{{ $profile->job_title }}</p>
+            <p class="contact-info">
+                {{ $profile->location }} | {{ $profile->phone }} | {{ $profile->email }}
+                @if($profile->website) | {{ $profile->website }} @endif
+            </p>
         </div>
-    </div>
 
-    <div class="section">
-        <div class="section-title">Ringkasan Profesional</div>
-        <div class="content">
-            <p>{{ $profile->summary }}</p>
+        <div class="section">
+            <div class="section-title">Ringkasan Profil</div>
+            <p class="item-description">{{ $profile->summary }}</p>
         </div>
-    </div>
 
-    <div class="section">
-        <div class="section-title">Pengalaman Kerja</div>
-        <div class="content">
-            @foreach($experiences as $exp)
-                <div class="job">
-                    <span class="period">{{ $exp->start_date->format('M Y') }} - {{ $exp->end_date ? $exp->end_date->format('M Y') : 'Saat Ini' }}</span>
-                    <div class="job-title">{{ $exp->job_title }}</div>
-                    <div class="company">{{ $exp->company_name }}</div>
-                    <p>{!! nl2br(e($exp->description)) !!}</p>
+        <div class="section">
+            <div class="section-title">Pengalaman</div>
+            @forelse($experiences as $exp)
+                <div class="item">
+                    <table class="item-table">
+                        <tr>
+                            <td class="title-cell">
+                                <div class="item-header">{{ $exp->job_title }}</div>
+                                <div class="item-subtitle">{{ $exp->company_name }} | {{ $exp->location }}</div>
+                            </td>
+                            <td class="date-cell">
+                                <div class="item-date">{{ \Carbon\Carbon::parse($exp->start_date)->format('M Y') }} - {{ $exp->end_date ? \Carbon\Carbon::parse($exp->end_date)->format('M Y') : 'Saat Ini' }}</div>
+                            </td>
+                        </tr>
+                    </table>
+                    <p class="item-description">{{ $exp->description }}</p>
                 </div>
-            @endforeach
+            @empty
+                <p>Belum ada pengalaman yang ditambahkan.</p>
+            @endforelse
         </div>
-    </div>
 
-    <div class="section">
-        <div class="section-title">Pendidikan</div>
-        <div class="content">
-            @foreach($educations as $edu)
-                <div class="edu">
-                    <span class="period">{{ $edu->start_year }} - {{ $edu->end_year ?? 'Saat Ini' }}</span>
-                    <div class="degree">{{ $edu->degree }}</div>
-                    <div class="institution">{{ $edu->institution }} - {{ $edu->field_of_study }}</div>
+        <div class="section">
+            <div class="section-title">Proyek Unggulan</div>
+            @forelse($projects as $project)
+                <div class="item">
+                    <div class="item-header">{{ $project->title }}</div>
+                    <div class="item-subtitle">{{ $project->category }}</div>
+                    <p class="item-description">{{ $project->description }}</p>
+                    <p style="font-size: 9pt; font-style: italic; color: #555;">Teknologi: {{ is_array($project->technologies) ? implode(', ', $project->technologies) : $project->technologies }}</p>
                 </div>
-            @endforeach
+            @empty
+                <p>Belum ada proyek yang ditambahkan.</p>
+            @endforelse
         </div>
-    </div>
+        
+        <div class="section">
+            <div class="section-title">Pendidikan</div>
+            @forelse($educations as $edu)
+                <div class="item">
+                     <table class="item-table">
+                        <tr>
+                            <td class="title-cell">
+                                <div class="item-header">{{ $edu->institution }}</div>
+                                <div class="item-subtitle">{{ $edu->degree }} - {{ $edu->field_of_study }}</div>
+                            </td>
+                            <td class="date-cell">
+                                <div class="item-date">{{ $edu->start_year }} - {{ $edu->end_year ?? 'Sekarang' }}</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            @empty
+                <p>Belum ada riwayat pendidikan yang ditambahkan.</p>
+            @endforelse
+        </div>
 
-    <div class="section">
-        <div class="section-title">Keahlian</div>
-        <div class="content">
-            <table class="skills-container">
-                @foreach($skills->groupBy('category') as $category => $skillGroup)
+        <div class="section">
+            <div class="section-title">Keahlian</div>
+            <table class="skills-table">
+                @forelse($skills->groupBy('category') as $category => $skillGroup)
                     <tr>
-                        <td width="25%"><div class="skill-category">{{ $category }}</div></td>
+                        <td class="skill-category">{{ $category }}</td>
                         <td>
-                            @foreach($skillGroup as $skill)
-                                <span class="skill-name">{{ $skill->name }}{{ !$loop->last ? ',' : '' }}</span>
-                            @endforeach
+                            {{ $skillGroup->pluck('name')->implode(', ') }}
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr><td>Belum ada keahlian yang ditambahkan.</td></tr>
+                @endforelse
             </table>
         </div>
-    </div>
+        
+        <div class="section">
+            <div class="section-title">Sertifikat</div>
+             @forelse($certificates as $cert)
+                <div class="item">
+                    <table class="item-table">
+                        <tr>
+                            <td class="title-cell">
+                                <div class="item-header">{{ $cert->title }}</div>
+                                <div class="item-subtitle">Diterbitkan oleh: {{ $cert->issuer }}</div>
+                            </td>
+                            <td class="date-cell">
+                                <div class="item-date">{{ $cert->issued_year }}</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            @empty
+                <p>Belum ada sertifikat yang ditambahkan.</p>
+            @endforelse
+        </div>
 
+    </div>
 </body>
 </html>

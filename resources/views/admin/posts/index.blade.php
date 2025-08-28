@@ -26,7 +26,7 @@
                 @forelse ($posts as $post)
                 <tr class="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
                     <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap text-white">{{ $post->title }}</th>
-                    <td class="px-6 py-4">{{ $post->user->name }}</td>
+                    <td>{{ $post->user?->name }}</td>
                     <td class="px-6 py-4">{{ $post->published_at->format('d M Y, H:i') }}</td>
                     <td class="px-6 py-4 text-right">
                         <a href="{{ route('admin.posts.edit', $post) }}" class="font-medium text-blue-500 hover:underline mr-4">Edit</a>

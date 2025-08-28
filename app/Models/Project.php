@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Project extends Model
 {
@@ -24,6 +25,16 @@ class Project extends Model
         'source_code_url',
         'is_featured',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function technologies(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => array_map('trim', explode(',', $value)),
+        );
+    }
 
     /**
      * The attributes that should be cast.

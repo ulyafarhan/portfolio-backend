@@ -14,13 +14,11 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('slug')->unique();
             $table->text('description');
-            $table->string('image_url'); // URL ke cloud storage
-            $table->json('technologies'); // Menyimpan daftar teknologi sebagai JSON
-            $table->string('demo_url')->nullable();
-            $table->string('source_code_url')->nullable();
-            $table->boolean('is_featured')->default(false);
+            $table->string('thumbnail')->nullable(); // Memastikan kolom thumbnail ADA
+            $table->string('url')->nullable();       // Memastikan kolom url ADA
+            $table->string('technologies');
+            $table->string('category');
             $table->timestamps();
         });
     }
