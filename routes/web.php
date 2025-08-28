@@ -18,8 +18,6 @@ Route::get('/', function () {
     return "Halaman Frontend (Next.js)";
 });
 
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
-
 Route::get('/cv/download', [CvGeneratorController::class, 'generate'])->name('cv.download');
 
 

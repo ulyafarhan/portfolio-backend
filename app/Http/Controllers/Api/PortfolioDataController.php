@@ -13,16 +13,16 @@ use App\Models\Skill;
 
 class PortfolioDataController extends Controller
 {
-    // Mengembalikan semua data proyek
+    // Mengembalikan semua data proyek dengan paginasi
     public function projects()
     {
-        return response()->json(Project::latest()->get());
+        return response()->json(Project::latest()->paginate(9));
     }
 
-    // Mengembalikan semua data postingan blog
+    // Mengembalikan semua data postingan blog dengan paginasi
     public function posts()
     {
-        return response()->json(Post::latest()->get());
+        return response()->json(Post::latest()->paginate(9));
     }
     
     // Mengembalikan semua data sertifikat
@@ -35,7 +35,7 @@ class PortfolioDataController extends Controller
     public function cvData()
     {
         return response()->json([
-            'profile' => Profile::first(),
+            'profile' => Profile::firstOrFail(),
             'experiences' => Experience::orderBy('start_date', 'desc')->get(),
             'educations' => Education::orderBy('start_year', 'desc')->get(),
             'skills' => Skill::orderBy('category')->get(),
